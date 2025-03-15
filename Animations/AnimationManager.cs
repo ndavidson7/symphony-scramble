@@ -1,12 +1,10 @@
 ﻿// Adapted from https://github.com/LubiiiCZ/DevQuickie/tree/master/Quickie004-SpritesheetAnimation
 
-using System.Collections.Generic;
-using System;
-using SymphonyScramble.StateMachine.States.OnGroundStates;
 using SymphonyScramble.StateMachine.States.InAirStates;
-using Microsoft.Xna.Framework.Input;
+using SymphonyScramble.StateMachine.States.OnGroundStates;
+using System.Collections.Generic;
 
-namespace SymphonyScramble;
+namespace SymphonyScramble.Animations;
 
 /// <summary>
 /// An AnimationManager holds a collection of Animations for an individual animated Sprite
@@ -15,9 +13,8 @@ namespace SymphonyScramble;
 /// </summary>
 public class AnimationManager
 {
-    #region Fields
-    private Dictionary<PlayerState, Animation> _anims;
-    private Dictionary<EnemyState, Animation> _enemyAnims;
+    private readonly Dictionary<PlayerState, Animation> _anims;
+    private readonly Dictionary<EnemyState, Animation> _enemyAnims;
     private PlayerState? _lastKey;
     private EnemyState? _enemyLastKey;
 
@@ -29,11 +26,10 @@ public class AnimationManager
     private EnemyFlyState? eFlyState;
 
     private readonly bool _isEnemy;
-    #endregion
 
     public AnimationManager()
     {
-        _anims = new();
+        _anims = [];
     }
 
     public AnimationManager(bool isEnemy)
@@ -102,7 +98,7 @@ public class AnimationManager
 
     public void Update(PlayerState key)
     {
-        
+
         if (_anims.TryGetValue(key, out Animation value))
         {
             value.Start();
@@ -118,7 +114,7 @@ public class AnimationManager
 
     public void Update(EnemyState newState)
     {
-        
+
         EnemyState key = MatchNewStateToBaseState(newState); // Find the matching head state.
         if (_enemyAnims.TryGetValue(key, out Animation value))
         {

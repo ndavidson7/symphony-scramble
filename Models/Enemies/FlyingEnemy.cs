@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework.Graphics;
+using SymphonyScramble.Models;
 using SymphonyScramble.StateMachine.States.InAirStates;
 using SymphonyScramble.StateMachine.States.OnGroundStates;
 

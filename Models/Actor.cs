@@ -1,9 +1,9 @@
-﻿namespace SymphonyScramble;
-using System;
+﻿using SymphonyScramble.Animations;
+
+namespace SymphonyScramble.Models;
 
 public abstract class Actor : Sprite
 {
-    #region Fields
     // Handle bulk of Actor logic
     protected readonly PlayerStateMachine _stateMachine;
     protected readonly AnimationManager _anims;
@@ -24,17 +24,6 @@ public abstract class Actor : Sprite
 
     public bool isHurt;
     public float hurtTimer;
-    #endregion
-
-    #region Properties
-    public override BoundingRectangle Bounds { get { return new BoundingRectangle(_position.X + _offsetX, _position.Y + _offsetY, _width, _height); } }
-    public override Vector2 Center { get { return new Vector2(_position.X + _offsetX + _width / 2.0f, _position.Y + _offsetY + _height / 2.0f); } }
-
-    public float Speed { get => _speed; set => _speed = value; }
-    public float JumpForce { get => _jumpForce; set => _jumpForce = value; }
-    public float Gravity { get => _gravity; set => _gravity = value; }
-    public PlayerStateMachine StateMachine => _stateMachine;
-    #endregion
 
     public Actor(Vector2 position, float scale, float speed, float jumpForce, float gravity, int UNSCALED_OFFSET_X, int UNSCALED_OFFSET_Y, int UNSCALED_WIDTH, int UNSCALED_HEIGHT) : base(position, scale)
     {
@@ -51,6 +40,18 @@ public abstract class Actor : Sprite
 
         AddAnims();
     }
+
+    public override BoundingRectangle Bounds { get { return new BoundingRectangle(_position.X + _offsetX, _position.Y + _offsetY, _width, _height); } }
+
+    public override Vector2 Center { get { return new Vector2(_position.X + _offsetX + _width / 2.0f, _position.Y + _offsetY + _height / 2.0f); } }
+
+    public float Speed { get => _speed; set => _speed = value; }
+
+    public float JumpForce { get => _jumpForce; set => _jumpForce = value; }
+
+    public float Gravity { get => _gravity; set => _gravity = value; }
+
+    public PlayerStateMachine StateMachine => _stateMachine;
 
     public override void Update()
     {

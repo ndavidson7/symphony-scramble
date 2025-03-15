@@ -1,4 +1,6 @@
-﻿namespace SymphonyScramble;
+﻿using SymphonyScramble.Models;
+
+namespace SymphonyScramble;
 
 public class LandState : OnGroundState
 {
@@ -11,8 +13,8 @@ public class LandState : OnGroundState
 
     public override void Enter()
     {
-        King k = (King)_stateMachine.Player;
-        _stateMachine.Player.Gravity = King.DefaultGravity;
+        Player k = (Player)_stateMachine.Player;
+        _stateMachine.Player.Gravity = Player.DefaultGravity;
     }
 
     public override void HandleInput()

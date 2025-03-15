@@ -1,4 +1,5 @@
-﻿using SymphonyScramble.StateMachine.States.InAirStates;
+﻿using SymphonyScramble.Models;
+using SymphonyScramble.StateMachine.States.InAirStates;
 using SymphonyScramble.StateMachine.States.OnGroundStates;
 
 namespace SymphonyScramble;

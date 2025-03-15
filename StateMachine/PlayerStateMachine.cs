@@ -1,4 +1,6 @@
-﻿namespace SymphonyScramble;
+﻿using SymphonyScramble.Models;
+
+namespace SymphonyScramble;
 
 public class PlayerStateMachine
 {

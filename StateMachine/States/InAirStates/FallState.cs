@@ -1,4 +1,6 @@
-﻿namespace SymphonyScramble;
+﻿using SymphonyScramble.Models;
+
+namespace SymphonyScramble;
 
 public class FallState : InAirState
 {
@@ -58,11 +60,11 @@ public class FallState : InAirState
             velocity.X += _stateMachine.Player.Speed;
         if (Globals.KeyboardState.IsKeyDown(Keys.S))
         {
-            _stateMachine.Player.Gravity = King.FastFallGravity;
+            _stateMachine.Player.Gravity = Player.FastFallGravity;
         }
         else
         {
-            _stateMachine.Player.Gravity = King.DefaultGravity;
+            _stateMachine.Player.Gravity = Player.DefaultGravity;
         }
         _stateMachine.Player.Velocity = velocity;
     }

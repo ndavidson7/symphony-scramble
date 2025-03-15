@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SymphonyScramble.Models;
+using System;
 using System.Collections.Generic;
 using static System.Formats.Asn1.AsnWriter;
 

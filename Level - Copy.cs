@@ -1,35 +1,28 @@
-﻿using System.Collections.Generic;
-using TiledCS;
-using System.Linq;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Media;
+using SymphonyScramble.Models;
+using SymphonyScramble.Scenes;
 using System;
-using System.Reflection;
-using System.Reflection.Emit;
+using System.Collections.Generic;
 using System.IO;
-using System.Reflection.Metadata;
-using System.Security;
-using static System.Formats.Asn1.AsnWriter;
-using System.Collections;
-using static System.Net.WebRequestMethods;
-using Microsoft.Xna.Framework.Media;
+using System.Linq;
+using System.Reflection;
+using TiledCS;
 
 namespace SymphonyScramble;
 
-public class Level
+internal class LevelCopy : Scene
 {
-    #region Fields
     private readonly Game1 _game;
     // Tiled-related fields
     private readonly string _mapName;
     private TiledMap _map;
     private Dictionary<int, TiledTileset> _tilesets;
-    //private Dictionary<int, Dictionary<int, Texture2D>> _tilesetTextures;
     private Dictionary<int, Texture2D> _tilesetTextures;
     private float _scaleFactor;
     private Matrix _transformMatrix;
 
     // Level objects
-    private Actor _player;
+    private readonly Actor _player;
     private LevelEnd _levelEnd;
     private readonly List<Tile> _tiles;
     private readonly List<Tile> _nonstatictiles;
@@ -39,9 +32,7 @@ public class Level
     private readonly List<InvisibleBarrier> _invisibleBarriers;
     private Vector2 _levelBounds;
     private Vector2 _playerStartPosition;
-    #endregion
 
-    #region Properties
     public Actor Player => _player;
     public LevelEnd End => _levelEnd;
     public List<Nonphysical> NonPhysicals => _nonPhysicals;
@@ -52,7 +43,6 @@ public class Level
     public List<FollowingEnemy> Enemies => _enemies;
 
     public List<InvisibleBarrier> InvisibleBarriers => _invisibleBarriers;
-    #endregion
 
     public ICollidable toRemove;
     public Nonphysical toRemoveEnemy;
@@ -71,8 +61,6 @@ public class Level
 
     public bool _firstLaunch;
 
-    public string _difficulty;
-
     private string _timer;
 
     public int _songHealth;
@@ -87,7 +75,7 @@ public class Level
 
     private Vector2 zeroVector;
 
-    private  List<string> levelNames;
+    private List<string> levelNames;
 
     public Level(Game1 game, string mapName)
     {
@@ -113,19 +101,23 @@ public class Level
 
         _firstLaunch = true;
 
-        _difficulty = _game.GetDifficulty();
-
         _timer = "0:00";
 
         _songHealth = 100;
 
         _songDecrement = 0;
 
-        _songHealthDifficultyDecrement = .2f;
+        _songHealthDifficultyDecrement = _game.Difficulty switch
+        {
+            Game1.DifficultyLevel.Easy => .6f,
+            Game1.DifficultyLevel.Regular => .3f,
+            Game1.DifficultyLevel.Hard => .15f,
+            _ => .3f,
+        };
 
         zeroVector = new Vector2(0, 0);
 
-        levelNames = new List<string> { "Level 1: Brass Ensenemble", "Level 2: Out of the Djimbe" };
+        levelNames = ["Level 1: Brass Ensenemble", "Level 2: Out of the Djimbe"];
 
     }
 
@@ -152,19 +144,6 @@ public class Level
                 return Color.Green;
             default:
                 return Color.Black;
-        }
-    }
-
-    public float songHealthDifficulty()
-    {
-        switch (Globals.CurrentLevel._difficulty)
-        {
-            case ("EASY"):
-                return .6f;
-            case ("HARD"):
-                return .15f;
-            default:
-                return .3f;
         }
     }
 
@@ -250,7 +229,6 @@ public class Level
 
     public void LoadContent()
     {
-
         Globals.CurrentLevel = this;
 
         healthBarTexture = Globals.Content.Load<Texture2D>("Sprites/Actors/King/HealthBar");
@@ -297,7 +275,6 @@ public class Level
         setPlayerPosition(_playerStartPosition);
         //_player = (Actor)Activator.CreateInstance(playerType, BindingFlags.CreateInstance | BindingFlags.Public | BindingFlags.Instance | BindingFlags.OptionalParamBinding, null, new object[] { _playerStartPosition, _scaleFactor }, null);
 
-
         var playerEndObject = playerLayer.objects.First(x => x.name == "end");
         Vector2 playerEndPos = new(playerEndObject.x, playerEndObject.y);
         Vector2 playerEndDimensions = new(playerEndObject.width, playerEndObject.height);
@@ -314,16 +291,12 @@ public class Level
             _invisibleBarriers.Add(new InvisibleBarrier(barrierPos, 1f, true));
         }
 
-
-        _difficulty = _game.GetDifficulty();
         removeAllRemovables();
         loadRemovables();
         resetLevelInfo();
-
-
     }
 
-    public void LoadAndConjoinAdjacentTiles(TiledLayer tiledLayer, params List<Tile>[] tileLists)
+    private void LoadAndConjoinAdjacentTiles(TiledLayer tiledLayer, params List<Tile>[] tileLists)
     {
         TiledLayerType layerType = tiledLayer.type;
 
@@ -586,7 +559,7 @@ public class Level
     {
         _songHealth = 100;
         _healthInt = healthDifficulty();
-        _songHealthDifficultyDecrement = songHealthDifficulty();
+        _songHealthDifficultyDecrement = SongHealthDifficulty();
         _score = _game._level1_score;
         _scoreString = "Score: " + _score;
         _player.isHurt = false;
@@ -604,7 +577,7 @@ public class Level
         resetLevelInfo();
     }
 
-    public void Update()
+    public override void Update(GameTime gameTime)
     {
 
         _player.Update();
@@ -667,7 +640,7 @@ public class Level
     }
 
 
-    public void Draw()
+    public override void Draw()
     {
         Globals.SpriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: _game.GetCamera().Transform); // moved from level
         var tileLayers = _map.Layers.Where(x => x.type == TiledLayerType.TileLayer);

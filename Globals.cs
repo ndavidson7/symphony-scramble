@@ -19,7 +19,7 @@ public static class Globals
         get
         {
             var debugTexture = new Texture2D(GraphicsDevice, 1, 1);
-            debugTexture.SetData(new Color[] { Color.DarkSlateGray });
+            debugTexture.SetData([Color.DarkSlateGray]);
             return debugTexture;
         }
     }

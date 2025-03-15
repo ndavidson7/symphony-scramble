@@ -1,4 +1,4 @@
-﻿namespace SymphonyScramble;
+﻿namespace SymphonyScramble.Models;
 
 public interface ICollidable
 {

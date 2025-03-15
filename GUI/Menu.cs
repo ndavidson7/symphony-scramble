@@ -1,14 +1,9 @@
 ﻿using Microsoft.Xna.Framework.Content;
+using SymphonyScramble.Scenes;
 using System;
-using System.IO;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static SymphonyScramble.Game1;
-using Microsoft.Xna.Framework.Media;
 
-namespace SymphonyScramble;
+namespace SymphonyScramble.GUI;
 
 /*
  * REFERENCES
@@ -17,29 +12,26 @@ namespace SymphonyScramble;
  * Date: 4/24/2023
  * URL: https://github.com/Oyyou/MonoGame_Tutorials/tree/master/MonoGame_Tutorials/Tutorial013
  */
-public class Menu
+internal class Menu : Scene
 {
-    #region Fields
-    private List<Button> _buttons;
-    private Game1 _game;
-    private SpriteFont _titleFont;
-    private SpriteFont _altFont;
-    #endregion
+    private readonly List<Button> _buttons;
+    private readonly Game1 _game;
+    private readonly SpriteFont _titleFont;
+    private readonly SpriteFont _altFont;
 
-    public Menu(Game1 game) 
+    public Menu(Game1 game)
     {
-        // not sure if i need something here
-        ContentManager _content = Globals.Content;
+        ContentManager content = Globals.Content;
         _game = game;
-        var startButtonTexture = _content.Load<Texture2D>("Sprites/Buttons/CGB02-green_L_btn");
-        var optionsButtonTexture = _content.Load<Texture2D>("Sprites/Buttons/CGB02-orange_M_btn");
-        var tutorialButtonTexture = _content.Load<Texture2D>("Sprites/Buttons/CGB02-blue_M_btn");
-        var quitButtonTexture = _content.Load<Texture2D>("Sprites/Buttons/CGB02-red_M_btn");
-        var buttonFont = _content.Load<SpriteFont>("Fonts/font");
-        _titleFont = _content.Load<SpriteFont>("Fonts/TitleFont");
-        _altFont = _content.Load<SpriteFont>("Fonts/AlternateFont");
+        var startButtonTexture = content.Load<Texture2D>("Sprites/Buttons/CGB02-green_L_btn");
+        var optionsButtonTexture = content.Load<Texture2D>("Sprites/Buttons/CGB02-orange_M_btn");
+        var tutorialButtonTexture = content.Load<Texture2D>("Sprites/Buttons/CGB02-blue_M_btn");
+        var quitButtonTexture = content.Load<Texture2D>("Sprites/Buttons/CGB02-red_M_btn");
+        var buttonFont = content.Load<SpriteFont>("Fonts/font");
+        _titleFont = content.Load<SpriteFont>("Fonts/TitleFont");
+        _altFont = content.Load<SpriteFont>("Fonts/AlternateFont");
 
-        Vector2 pos = new Vector2(Config.WindowSize.X / 2 - (startButtonTexture.Width / 2), Config.WindowSize.Y *3/8);
+        Vector2 pos = new(Config.WindowSize.X / 2 - startButtonTexture.Width / 2, Config.WindowSize.Y * 3 / 8);
 
         var startButton = new Button(startButtonTexture, buttonFont)
         {
@@ -47,7 +39,6 @@ public class Menu
             Text = "START"
         };
         startButton.Click += StartButton_Click;
-
 
         pos.Y += startButtonTexture.Height * 7 / 6;
         pos.X += startButtonTexture.Width / 4;
@@ -69,7 +60,7 @@ public class Menu
         optionsButton.Click += OptionsButton_Click;
 
 
-        pos.X += startButtonTexture.Width + Config.WindowSize.X/40;
+        pos.X += startButtonTexture.Width + Config.WindowSize.X / 40;
         var quitButton = new Button(quitButtonTexture, buttonFont)
         {
             Position = pos,
@@ -77,12 +68,7 @@ public class Menu
         };
         quitButton.Click += QuitButton_Click;
 
-     
-
-        _buttons = new List<Button>() 
-        {
-            startButton, optionsButton, tutorialButton, quitButton
-        };
+        _buttons = [startButton, optionsButton, tutorialButton, quitButton];
     }
 
     private void OptionsButton_Click(object sender, EventArgs e)
@@ -91,37 +77,27 @@ public class Menu
         _game.SetState(Game1.ScreenState.Options);
     }
 
-    // executed when quit is clicked
-
     private void TutorialButton_Click(object sender, EventArgs e)
     {
-
         _game._level_started = true;
         _game.SetState(Game1.ScreenState.Tutorial);
         Globals.ResetTime();
         Globals.CurrentLevel = _game._tutorial;
         Globals.CurrentLevel.LoadContent();
 
-
         _game.switch_songs();
     }
 
-        private void QuitButton_Click(object sender, EventArgs e)
+    private void QuitButton_Click(object sender, EventArgs e)
     {
         _game.Exit();
     }
 
-    // executed when start is clicked
-
-    
     private void StartButton_Click(object sender, EventArgs e)
     {
-
-
         _game.switch_levels();
 
         _game.switch_songs();
-
     }
 
     public void LoadContent()
@@ -129,7 +105,7 @@ public class Menu
 
     }
 
-    public void Update()
+    public override void Update(GameTime gameTime)
     {
         foreach (var button in _buttons)
         {
@@ -137,14 +113,13 @@ public class Menu
         }
     }
 
-    public void Draw()
+    public override void Draw()
     {
-
         Globals.SpriteBatch.Begin();
 
         var text = "Symphony Scramble!";
-        var x = (Config.WindowSize.X / 2) - (_titleFont.MeasureString(text).X / 2);
-        var y = (Config.WindowSize.Y / 7);
+        var x = Config.WindowSize.X / 2 - _titleFont.MeasureString(text).X / 2;
+        var y = Config.WindowSize.Y / 7;
 
         Globals.SpriteBatch.DrawString(_titleFont, text, new Vector2(x, y), Color.ForestGreen);
 
@@ -153,10 +128,10 @@ public class Menu
             button.Draw();
         }
 
-        String highscoretext = $"High Score: {_game.GetHighScore()}";
-        x = (Config.WindowSize.X / 2) - (_altFont.MeasureString(highscoretext).X / 2);
+        string highscoreText = $"High Score: {_game.GetHighScore()}";
+        x = Config.WindowSize.X / 2 - _altFont.MeasureString(highscoreText).X / 2;
         y = Config.WindowSize.Y * 17 / 20;
-        Globals.SpriteBatch.DrawString(_altFont, highscoretext, new Vector2(x, y), Color.Crimson);
+        Globals.SpriteBatch.DrawString(_altFont, highscoreText, new Vector2(x, y), Color.Crimson);
 
         Globals.SpriteBatch.End();
     }

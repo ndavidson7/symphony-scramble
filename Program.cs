@@ -1,3 +1,10 @@
-﻿
-using var game = new SymphonyScramble.Game1();
-game.Run();
+﻿using SymphonyScramble;
+
+internal class Program
+{
+    private static void Main(string[] args)
+    {
+        using Game1 game = new();
+        game.Run();
+    }
+}

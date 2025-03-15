@@ -2,7 +2,7 @@
 
 using System.Collections.Generic;
 
-namespace SymphonyScramble;
+namespace SymphonyScramble.Animations;
 
 /// <summary>
 /// An Animation is an ordered collection of frames on a spritesheet that when drawn
@@ -10,7 +10,6 @@ namespace SymphonyScramble;
 /// </summary>
 public class Animation
 {
-    #region Fields
     private readonly Texture2D _texture;
     private readonly List<Rectangle> _sourceRectangles = new();
     private float _scale;
@@ -20,12 +19,8 @@ public class Animation
     private float _frameTimeLeft;
     private readonly bool _looping;
     private bool _active = true;
-    #endregion
 
-    #region Properties
     public bool IsFinished => !_active;
-
-    #endregion
 
     /// <summary>
     /// Create an Animation using a spritesheet that has each animation on an entire row or column,
@@ -128,7 +123,6 @@ public class Animation
     /// </summary>
     public void Update()
     {
-       
         if (!_active) return;
 
         _frameTimeLeft -= (float)Globals.ElapsedSeconds;
@@ -140,7 +134,7 @@ public class Animation
             {
                 _frame = (_frame + 1) % _frames;
             }
-            else if (_active)
+            else if (++_frame == _frames)
             {
                 if (_frame < _frames - 1)
                 {
@@ -151,8 +145,6 @@ public class Animation
                     _active = false;
                 }
             }
-
-
         }
     }
 
@@ -163,7 +155,7 @@ public class Animation
     /// <param name="flip">Whether the drawing should be flipped horizontally</param>
     public void Draw(Vector2 position, bool flip, bool isHurt = false)
     {
-        if (isHurt)  Globals.SpriteBatch.Draw(_texture, position, _sourceRectangles[_frame], Color.Red, 0, Vector2.Zero, _scale, flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, 1);
+        if (isHurt) Globals.SpriteBatch.Draw(_texture, position, _sourceRectangles[_frame], Color.Red, 0, Vector2.Zero, _scale, flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, 1);
         else Globals.SpriteBatch.Draw(_texture, position, _sourceRectangles[_frame], Color.White, 0, Vector2.Zero, _scale, flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, 1);
     }
 }

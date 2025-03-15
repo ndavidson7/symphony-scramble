@@ -1,6 +1,8 @@
-﻿namespace SymphonyScramble;
+﻿using SymphonyScramble.Animations;
 
-public class King : Actor
+namespace SymphonyScramble.Models;
+
+public class Player : Actor
 {
     // hard-coded, king-specific numbers for bounding box and hitbox
     private const int UNSCALED_OFFSET_X = 0;
@@ -24,7 +26,7 @@ public class King : Actor
     private Texture2D _fallTexture;
     private Texture2D _landTexture;
 
-    public King(Vector2 position, float scale = DEFAULT_SCALE, float speed = DEFAULT_SPEED, float jumpForce = DEFAULT_JUMPFORCE, float gravity = DEFAULT_GRAVITY)
+    public Player(Vector2 position, float scale = DEFAULT_SCALE, float speed = DEFAULT_SPEED, float jumpForce = DEFAULT_JUMPFORCE, float gravity = DEFAULT_GRAVITY)
         : base(position, scale, speed, jumpForce, gravity, UNSCALED_OFFSET_X, UNSCALED_OFFSET_Y, UNSCALED_WIDTH, UNSCALED_HEIGHT) { }
 
     public override void LoadContent()

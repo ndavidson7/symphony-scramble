@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using SymphonyScramble.StateMachine.States.InAirStates;
 using SymphonyScramble.StateMachine.States.OnGroundStates;
+using SymphonyScramble.Animations;
+using SymphonyScramble.Models;
 
 namespace SymphonyScramble
 {

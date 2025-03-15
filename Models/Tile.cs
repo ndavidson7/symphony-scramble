@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
+using SymphonyScramble.Models;
 
 namespace SymphonyScramble;
 

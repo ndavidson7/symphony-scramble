@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SymphonyScramble;
+namespace SymphonyScramble.GUI;
 
 /*
  * REFERENCES
@@ -15,7 +11,6 @@ namespace SymphonyScramble;
  */
 public class Button
 {
-    #region Fields
     private MouseState _mouseState;
 
     private MouseState _prevMouseState;
@@ -25,11 +20,14 @@ public class Button
     private SpriteFont _font;
 
     private bool _isHovering;
-
-    #endregion
-
-    #region Properties
+    
     public event EventHandler Click;
+
+    public Button(Texture2D texture, SpriteFont font)
+    {
+        _texture = texture;
+        _font = font;
+    }
 
     public bool Clicked { get; private set; }
 
@@ -44,14 +42,6 @@ public class Button
     }
 
     public string Text { get; set; }
-    #endregion
-
-    #region Methods
-    public Button (Texture2D texture, SpriteFont font)
-    {
-        _texture = texture;
-        _font = font;
-    }
 
     public void Draw()
     {
@@ -64,14 +54,14 @@ public class Button
 
         if (!string.IsNullOrEmpty(Text))
         {
-            var x = (Rectangle.X + (Rectangle.Width / 2)) - (_font.MeasureString(Text).X / 2);
-            var y = (Rectangle.Y + (Rectangle.Height / 2)) - (_font.MeasureString(Text).Y / 2);
+            var x = Rectangle.X + Rectangle.Width / 2 - _font.MeasureString(Text).X / 2;
+            var y = Rectangle.Y + Rectangle.Height / 2 - _font.MeasureString(Text).Y / 2;
 
             Globals.SpriteBatch.DrawString(_font, Text, new Vector2(x, y), Color.Black); // draws text on box
         }
     }
 
-    public void Update ()
+    public void Update()
     {
         _prevMouseState = _mouseState;
         _mouseState = Mouse.GetState();
@@ -90,6 +80,5 @@ public class Button
             }
         }
     }
-    #endregion
 }
 

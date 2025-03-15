@@ -1,6 +1,6 @@
 ﻿using static System.Math;
 
-namespace SymphonyScramble;
+namespace SymphonyScramble.Models;
 
 public abstract class Interactable : Sprite
 {
