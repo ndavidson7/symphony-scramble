@@ -1,33 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.IO;
 using System.Reflection;
-using TiledCS;
-using System.Linq;
-using Microsoft.Xna.Framework.Graphics;
-
-using System.Reflection.Emit;
-using System.Reflection.Metadata;
-using System.Security;
-using static System.Formats.Asn1.AsnWriter;
-using System.Collections;
 using Microsoft.Xna.Framework.Media;
+using TiledCS;
 
 namespace SymphonyScramble;
 
-/*
- * REFERENCES
- * Title: Identify if a string is a number
- * Author: 'mqp' (on stackoverflow) and edited by 'Vadim Ovchinnikov' (on stackoverflow)
- * Date: 4/25/2023
- * URL: https://stackoverflow.com/questions/894263/identify-if-a-string-is-a-number
- * 
- * Title: Easiest way to read from and write to files
- * Author: 'vc 74' (on stackoverflow)
- * Date: 4/25/23
- * URL: https://stackoverflow.com/questions/7569904/easiest-way-to-read-from-and-write-to-files
- */
 public class Game1 : Game
 {
     private readonly GraphicsDeviceManager _graphics;
@@ -147,7 +126,7 @@ public class Game1 : Game
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
-        Content.RootDirectory = "Content";
+        Content.RootDirectory = Path.Combine(AppContext.BaseDirectory, "Content");
         IsMouseVisible = true;
     }
 
@@ -155,24 +134,24 @@ public class Game1 : Game
     {
         switch (_screenState)
         {
-            case (Game1.ScreenState.Menu):
-                SetState(Game1.ScreenState.Level_1);
+            case (ScreenState.Menu):
+                SetState(ScreenState.Level_1);
                 Globals.CurrentLevel = _level1;
                 _level_num = 1;
                 break;
-            case (Game1.ScreenState.Level_1):
-                SetState(Game1.ScreenState.Level_2);
+            case (ScreenState.Level_1):
+                SetState(ScreenState.Level_2);
                 Globals.CurrentLevel = _level2;
                 _level_num = 2;
                 break;
-            case (Game1.ScreenState.Level_2):
-                SetState(Game1.ScreenState.Menu);
+            case (ScreenState.Level_2):
+                SetState(ScreenState.Menu);
                 break;
-            case (Game1.ScreenState.Tutorial):
-                SetState(Game1.ScreenState.Menu);
+            case (ScreenState.Tutorial):
+                SetState(ScreenState.Menu);
                 break;
             default:
-                SetState(Game1.ScreenState.Menu);
+                SetState(ScreenState.Menu);
                 Globals.CurrentLevel = _level1;
                 break;
         }
@@ -375,7 +354,7 @@ public class Game1 : Game
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || kb.IsKeyDown(Keys.Escape))
             {
 
-                SetState(Game1.ScreenState.Menu);
+                SetState(ScreenState.Menu);
                 Globals.CurrentLevel = _level1;
                 _level_num = 1;
                 _level1_score = 0;

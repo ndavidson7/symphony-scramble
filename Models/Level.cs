@@ -276,11 +276,11 @@ public class Level
             //    tilesetDictionary[tile.id] = Globals.Content.Load<Texture2D>($"Tilesets\\SmallTiles\\{tileImage}");
             //}
             var tileImage = Path.GetFileNameWithoutExtension(item.Value.Image.source);
-            _tilesetTextures[item.Key] = Globals.Content.Load<Texture2D>($"Tilesets\\{tileImage}");
+            _tilesetTextures[item.Key] = Globals.Content.Load<Texture2D>($"Tilesets/{tileImage}");
         }
 
-        _scoreFont = Globals.Content.Load<SpriteFont>("Fonts\\File");
-        _healthFont = Globals.Content.Load<SpriteFont>("Fonts\\HealthFont");
+        _scoreFont = Globals.Content.Load<SpriteFont>("Fonts/File");
+        _healthFont = Globals.Content.Load<SpriteFont>("Fonts/HealthFont");
 
         // Scale map to fit window size
         _scaleFactor = Math.Min((float)Config.WindowSize.X / (_map.Width * _map.TileWidth), (float)Config.WindowSize.Y / (_map.Height * _map.TileHeight));

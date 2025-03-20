@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Content;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -67,7 +68,7 @@ public class OptionsMenu
 
         LoadCredits();
 
-        _creditsFont = Globals.Content.Load<SpriteFont>("Fonts\\HealthFont");
+        _creditsFont = Globals.Content.Load<SpriteFont>("Fonts/HealthFont");
     }
 
     private void BackButton_Click(object sender, EventArgs e)
