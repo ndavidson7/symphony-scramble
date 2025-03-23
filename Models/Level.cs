@@ -257,8 +257,11 @@ public class Level
 
         // Set the "Copy to Output Directory" property of these two files to `Copy if newer`
         // by clicking them in the solution explorer.
-        _map = new TiledMap(Path.Combine(Globals.Content.RootDirectory, $"{_mapName}.tmx"));
-        _tilesets = _map.GetTiledTilesets(Globals.Content.RootDirectory + "/"); // DO NOT forget the / at the end
+        FileStream mapStream =
+            (FileStream)TitleContainer.OpenStream(Path.Combine(Globals.Content.RootDirectory, $"{_mapName}.tmx"));
+        _map = new TiledMap(mapStream);
+        string tilesetsDirectory = new DirectoryInfo(mapStream.Name).Parent?.FullName ?? throw new FileNotFoundException("Could not find tilesets directory");
+        _tilesets = _map.GetTiledTilesets(tilesetsDirectory + "/"); // DO NOT forget the / at the end
 
         _levelBounds = new(_map.Width * _map.TileWidth, _map.Height * _map.TileHeight); // dimensions of the map in pixels
 

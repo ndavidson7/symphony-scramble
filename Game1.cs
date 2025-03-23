@@ -126,7 +126,7 @@ public class Game1 : Game
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
-        Content.RootDirectory = Path.Combine(AppContext.BaseDirectory, "Content");
+        Content.RootDirectory = "Content";
         IsMouseVisible = true;
     }
 
@@ -185,7 +185,7 @@ public class Game1 : Game
         Type? playerType = Type.GetType(playerClass) ?? throw new ArgumentException($"Player layer class, {playerClass}, is not a valid Actor type");
 
 
-        TiledMap _map = new TiledMap(Path.Combine(Globals.Content.RootDirectory, "drum.tmx"));
+        TiledMap _map = new TiledMap(TitleContainer.OpenStream(Path.Combine(Globals.Content.RootDirectory, "drum.tmx")));
         float _scale = Math.Min((float)Config.WindowSize.X / (_map.Width * _map.TileWidth), (float)Config.WindowSize.Y / (_map.Height * _map.TileHeight));
         _player = (Actor)Activator.CreateInstance(playerType, BindingFlags.CreateInstance | BindingFlags.Public | BindingFlags.Instance | BindingFlags.OptionalParamBinding, null, new object[] { new Vector2(0, 0), _scale }, null);
 
